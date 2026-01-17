@@ -57,20 +57,35 @@ async function uploadProduct() {
     const imageUrl = await uploadImage(file);
 
     // Step 2: Send details to Google Sheets API
-    const scriptURL = "https://script.google.com/macros/s/AKfycbw9hbO8LfV6S12pfJXlT4yHbr1KhsC9A0PxzuCR4nD0MO7eZyA8XTujEzRts3DBPp8n/exec";
+    const scriptURL = "https://script.google.com/macros/s/AKfycbxtBpzhOrF1fcWOkuFXIb6-o8KmTxzNmq3Bh6j3mGLpuFrzgu9Za9ZCLiaWQF1Pwqre/exec
+";
 
     await fetch(scriptURL, {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-        name: name,
-        price: price,
-        image: imageUrl,
-        description: description
-        })
-    });
+  method: "POST",
+  mode: "no-cors",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    name: name,
+    price: price,
+    image: imageUrl,
+    description: description
+  })
+});
+
+    // await fetch(scriptURL, {
+    // method: "POST",
+    // headers: {
+    //     "Content-Type": "application/json"
+    // },
+    // body: JSON.stringify({
+    //     name: name,
+    //     price: price,
+    //     image: imageUrl,
+    //     description: description
+    //     })
+    // });
 
 
     alert("Product Added Successfully!");
