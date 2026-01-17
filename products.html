@@ -75,12 +75,12 @@ async function loadProducts() {
     card.className = "card";
 
     card.innerHTML = `
-      <img src="${item.image}" alt="${item.name}">
-      <h3>${item.name}</h3>
-      <div class="price">₹ ${Number(item.price || 0).toLocaleString("en-IN")}</div>
+  <img src="${item.image}" alt="${item.name}">
+  <h3>${item.name}</h3>
+  <div class="price">₹ ${parseInt(item.price || 0).toLocaleString("en-IN")}</div>
+  <div class="desc">${item.description}</div>
+`;
 
-      <div class="desc">${item.description}</div>
-    `;
 
     container.appendChild(card);
   });
@@ -91,6 +91,7 @@ loadProducts();
 
 </body>
 </html>
+
 
 
 
