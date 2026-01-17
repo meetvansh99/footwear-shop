@@ -22,7 +22,8 @@
 <button onclick="uploadProduct()">Upload Product</button>
 
 <script>
-const cloudName = "dwgtjj0j2";       // tumhara cloudinary cloud name
+const cloudName = "dwgtjioj2";
+       // tumhara cloudinary cloud name
 const uploadPreset = "footwear_upload";
 
 async function uploadImage(file) {
@@ -58,16 +59,19 @@ async function uploadProduct() {
     // Step 2: Send details to Google Sheets API
     const scriptURL = "https://script.google.com/macros/s/AKfycbw9hbO8LfV6S12pfJXlT4yHbr1KhsC9A0PxzuCR4nD0MO7eZyA8XTujEzRts3DBPp8n/exec";
 
-
     await fetch(scriptURL, {
-        method: "POST",
-        body: JSON.stringify({
-            name: name,
-            price: price,
-            image: imageUrl,
-            description: description
-        })
-    });
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        name: name,
+        price: price,
+        image: imageUrl,
+        description: description
+    })
+});
+
 
     alert("Product Added Successfully!");
 }
