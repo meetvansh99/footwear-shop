@@ -2,29 +2,91 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Products</title>
-  <link rel="stylesheet" href="css/style.css">
+  <title>Our Footwear Collection</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #fff;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #00e676;
+      margin-bottom: 30px;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: #1c1c1c;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.6);
+    }
+
+    .card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .card h3 {
+      margin: 10px 0 5px;
+      color: #00e676;
+    }
+
+    .price {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .desc {
+      font-size: 14px;
+      color: #ccc;
+    }
+  </style>
 </head>
 <body>
 
-<h2>Our Footwear Collection</h2>
+<h1>Our Footwear Collection</h1>
 
-<div class="products">
-  <div class="card">
-    <h3>Nike Air Max</h3>
-    <p>₹2,999</p>
-  </div>
+<div class="products" id="products"></div>
 
-  <div class="card">
-    <h3>Adidas Runner</h3>
-    <p>₹2,499</p>
-  </div>
+<script>
+const sheetAPI =
+  "https://script.google.com/macros/s/AKfycbxtBpzhOrF1fcWOkuFXIb6-o8KmTxzNmq3Bh6j3mGLpuFrzgu9Za9ZCLiaWQF1Pwqre/exec";
 
-  <div class="card">
-    <h3>Puma Sports</h3>
-    <p>₹1,999</p>
-  </div>
-</div>
+async function loadProducts() {
+  const res = await fetch(sheetAPI);
+  const data = await res.json();
+
+  const container = document.getElementById("products");
+
+  data.reverse().forEach(item => {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    card.innerHTML = `
+      <img src="${item.image}" alt="${item.name}">
+      <h3>${item.name}</h3>
+      <div class="price">₹ ${item.price}</div>
+      <div class="desc">${item.description}</div>
+    `;
+
+    container.appendChild(card);
+  });
+}
+
+loadProducts();
+</script>
 
 </body>
 </html>
