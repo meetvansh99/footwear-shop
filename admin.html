@@ -19,11 +19,10 @@
 <label>Product Image</label>
 <input type="file" id="imageInput"><br><br>
 
-<button onclick="uploadProduct()">Upload Product</button>
+<button id="uploadBtn">Upload Product</button>
 
 <script>
-const cloudName = "dwgtjjoj2";
-       // tumhara cloudinary cloud name
+const cloudName = "dwgtjjoj2";  
 const uploadPreset = "footwear_upload";
 
 async function uploadImage(file) {
@@ -39,7 +38,7 @@ async function uploadImage(file) {
     });
 
     const data = await response.json();
-    return data.secure_url;  // final image URL
+    return data.secure_url;
 }
 
 async function uploadProduct() {
@@ -53,43 +52,26 @@ async function uploadProduct() {
         return;
     }
 
-    // Step 1: Upload to Cloudinary
     const imageUrl = await uploadImage(file);
 
-    // Step 2: Send details to Google Sheets API
-    const scriptURL = "https://script.google.com/macros/s/AKfycbxtBpzhOrF1fcWOkuFXIb6-o8KmTxzNmq3Bh6j3mGLpuFrzgu9Za9ZCLiaWQF1Pwqre/exec
-";
+    const scriptURL = "https://script.google.com/macros/s/AKfycbxtBpzhOrF1fcWOkuFXIb6-o8KmTxzNmq3Bh6j3mGLpuFrzgu9Za9ZCLiaWQF1Pwqre/exec";
 
     await fetch(scriptURL, {
-  method: "POST",
-  mode: "no-cors",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    name: name,
-    price: price,
-    image: imageUrl,
-    description: description
-  })
-});
-
-    // await fetch(scriptURL, {
-    // method: "POST",
-    // headers: {
-    //     "Content-Type": "application/json"
-    // },
-    // body: JSON.stringify({
-    //     name: name,
-    //     price: price,
-    //     image: imageUrl,
-    //     description: description
-    //     })
-    // });
-
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            name: name,
+            price: price,
+            image: imageUrl,
+            description: description
+        })
+    });
 
     alert("Product Added Successfully!");
 }
+
+document.getElementById("uploadBtn").addEventListener("click", uploadProduct);
 </script>
 
 </body>
