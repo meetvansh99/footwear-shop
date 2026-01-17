@@ -20,32 +20,34 @@
 
     .products {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 20px;
     }
 
     .card {
       background: #1c1c1c;
-      border-radius: 10px;
+      border-radius: 12px;
       padding: 15px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.6);
+      box-shadow: 0 0 15px rgba(0,0,0,0.6);
     }
 
     .card img {
       width: 100%;
       height: 220px;
       object-fit: cover;
-      border-radius: 8px;
+      border-radius: 10px;
     }
 
     .card h3 {
       margin: 10px 0 5px;
       color: #00e676;
+      text-transform: capitalize;
     }
 
     .price {
+      font-size: 18px;
       font-weight: bold;
-      margin-bottom: 5px;
+      margin-bottom: 6px;
     }
 
     .desc {
@@ -61,6 +63,7 @@
 <div class="products" id="products"></div>
 
 <script>
+/* ✅ SAME DEPLOYED GOOGLE SCRIPT URL */
 const sheetAPI =
   "https://script.google.com/macros/s/AKfycbwHy9Tileg_aHtCUwHE4hmQJOOL_yEmIskFPEjJdQ9Rn15V0PhhdAk_t-MkcFk2dS1M/exec";
 
@@ -69,19 +72,25 @@ async function loadProducts() {
   const data = await res.json();
 
   const container = document.getElementById("products");
+  container.innerHTML = "";
 
   data.reverse().forEach(item => {
+
+    // ✅ PRICE FIX (ROOT CAUSE SOLVED)
+    const priceNumber = Number(String(item.price).trim());
+    const finalPrice = isNaN(priceNumber)
+      ? "Price not available"
+      : "₹ " + priceNumber.toLocaleString("en-IN");
+
     const card = document.createElement("div");
     card.className = "card";
 
     card.innerHTML = `
-  <img src="${item.image}" alt="${item.name}">
-  <h3>${item.name}</h3>
-  <div class="price">₹ ${Number(String(item.price).trim()).toLocaleString("en-IN")}</div>
-  <div class="desc">${item.description}</div>
-`;
-
-
+      <img src="${item.image}" alt="${item.name}">
+      <h3>${item.name}</h3>
+      <div class="price">${finalPrice}</div>
+      <div class="desc">${item.description || ""}</div>
+    `;
 
     container.appendChild(card);
   });
@@ -92,8 +101,3 @@ loadProducts();
 
 </body>
 </html>
-
-
-
-
-
