@@ -77,9 +77,10 @@ async function loadProducts() {
     card.innerHTML = `
   <img src="${item.image}" alt="${item.name}">
   <h3>${item.name}</h3>
-  <div class="price">₹ ${parseInt(item.price || 0).toLocaleString("en-IN")}</div>
+  <div class="price">₹ ${Number(String(item.price).trim()).toLocaleString("en-IN")}</div>
   <div class="desc">${item.description}</div>
 `;
+
 
 
     container.appendChild(card);
@@ -91,6 +92,7 @@ loadProducts();
 
 </body>
 </html>
+
 
 
 
