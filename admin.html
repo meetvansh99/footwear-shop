@@ -109,6 +109,56 @@
 
 <body>
 
+  <nav class="navbar">
+  <div class="logo">Brothers Shoes</div>
+
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="products.html">Products</a></li>
+    <li><a href="admin.html">Admin</a></li>
+  </ul>
+</nav>
+
+<style>
+  .navbar {
+    width: 100%;
+    padding: 15px 30px;
+    background: #0d0d0d;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid #1f1f1f;
+  }
+
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #00e676;
+    letter-spacing: 1px;
+  }
+
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+  }
+
+  .nav-links li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 17px;
+    transition: 0.3s;
+  }
+
+  .nav-links li a:hover {
+    color: #00e676;
+  }
+</style>
+
+
   <div class="admin-card">
     <div class="brand">BROTHERS SHOES 👟</div>
     <h2>Admin Panel</h2>
