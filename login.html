@@ -1,88 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Admin Login - Brothers Shoes</title>
+  <meta charset="UTF-8" />
+  <title>Brothers Shoes — Admin Panel</title>
 
   <style>
     body {
       margin: 0;
-      background: #0d0d0d;
-      font-family: 'Poppins', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+      font-family: Arial, sans-serif;
+      background: #0f0f0f;
       color: white;
     }
 
-    .box {
-      width: 350px;
-      background: #1a1a1a;
+    /* NAVBAR */
+    .navbar {
+      padding: 15px 40px;
+      background: #0b0b0b;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #222;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      color: #00e676;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+    }
+
+    .nav-links a:hover {
+      color: #00e676;
+    }
+
+    /* ADMIN CARD */
+    .admin-box {
+      width: 450px;
+      background: #1b1b1b;
+      margin: 40px auto;
       padding: 30px;
       border-radius: 15px;
-      box-shadow: 0 0 25px rgba(76,255,136,0.2);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .admin-box h2 {
       text-align: center;
+      color: #00e676;
+      margin-bottom: 20px;
     }
 
-    h2 {
-      color: #4cff88;
-      margin-bottom: 25px;
+    label {
+      font-size: 14px;
+      margin-top: 10px;
+      display: block;
+      color: #ccc;
     }
 
-    input {
+    input, textarea {
       width: 100%;
       padding: 12px;
-      margin: 12px 0;
+      margin-top: 6px;
+      background: #0f0f0f;
+      border: 1px solid #333;
       border-radius: 8px;
-      border: none;
-      font-size: 16px;
-      background: #2a2a2a;
       color: white;
+      font-size: 15px;
+    }
+
+    textarea {
+      height: 90px;
+      resize: none;
     }
 
     button {
       width: 100%;
-      padding: 12px;
-      background: #4cff88;
-      border-radius: 8px;
-      color: #000;
-      font-weight: 600;
-      cursor: pointer;
-      font-size: 18px;
+      margin-top: 20px;
+      padding: 14px;
+      background: #00e676;
       border: none;
+      color: black;
+      font-size: 18px;
+      font-weight: bold;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: 0.3s;
     }
 
     button:hover {
-      background: #39e074;
+      background: #00c853;
+    }
+
+    .note {
+      margin-top: 12px;
+      font-size: 12px;
+      text-align: center;
+      color: #aaa;
+    }
+
+    /* LOGOUT BUTTON */
+    .logout-btn {
+      background: #ff4c4c;
+      color: white;
+      border-radius: 30px;
+      margin-top: 15px;
+    }
+
+    .logout-btn:hover {
+      background: #ff2e2e;
     }
   </style>
 </head>
+
 <body>
 
-  <div class="box">
-    <h2>Admin Login</h2>
-    <input type="text" id="username" placeholder="Enter Username">
-    <input type="password" id="password" placeholder="Enter Password">
-    <button onclick="login()">Login</button>
+  <!-- LOGIN PROTECTION -->
+  <script>
+    if (localStorage.getItem("adminLogin") !== "true") {
+      alert("Access Denied! Please Login First.");
+      window.location.href = "login.html";
+    }
+  </script>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="logo">Brothers Shoes</div>
+
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html">Products</a></li>
+      <li><a href="admin.html">Admin</a></li>
+    </ul>
+  </nav>
+
+  <!-- ADMIN PANEL CARD -->
+  <div class="admin-box">
+    <h2>Admin Panel</h2>
+
+    <label>Product Name</label>
+    <input type="text" id="name" placeholder="e.g. Nike Air Max" />
+
+    <label>Price (₹)</label>
+    <input type="number" id="price" placeholder="e.g. 2999" />
+
+    <label>Description</label>
+    <textarea id="description" placeholder="Product description"></textarea>
+
+    <label>Product Image</label>
+    <input type="file" id="imageInput" />
+
+    <button id="uploadBtn">Upload Product</button>
+
+    <button class="logout-btn" onclick="logout()">Logout</button>
+
+    <div class="note">Image uploads to Cloudinary • Data saved to Google Sheets</div>
   </div>
 
-<script>
-  function login() {
-    const username = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value.trim();
-
-    const correctUser = "admin";
-    const correctPass = "brothers@123"; // Change your password here
-
-    if (username === correctUser && password === correctPass) {
-      localStorage.setItem("adminLogin", "true");
-      window.location.href = "admin.html";
-    } else {
-      alert("Incorrect credentials!");
+  <script>
+    // LOGOUT FUNCTION
+    function logout() {
+      localStorage.removeItem("adminLogin");
+      window.location.href = "login.html";
     }
-  }
-</script>
+
+    const cloudName = "dwgtjjoj2";
+    const uploadPreset = "footwear_upload";
+
+    async function uploadImage(file) {
+      const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", uploadPreset);
+
+      const response = await fetch(url, { method: "POST", body: formData });
+      const data = await response.json();
+      return data.secure_url;
+    }
+
+    async function uploadProduct() {
+      const name = document.getElementById("name").value;
+      const price = document.getElementById("price").value;
+      const description = document.getElementById("description").value;
+      const file = document.getElementById("imageInput").files[0];
+
+      if (!file) {
+        alert("Please select an image!");
+        return;
+      }
+
+      const imageUrl = await uploadImage(file);
+
+      const scriptURL =
+        "https://script.google.com/macros/s/AKfycbxlvzwKMe4kLICwgKT00Vfe8H569MMNq-2wQ46GLWGd7WtAr3u3b8MAOFwTJpUzxWpT/exec";
+
+      await fetch(scriptURL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, price, image: imageUrl, description }),
+      });
+
+      alert("Product Added Successfully!");
+    }
+
+    document.getElementById("uploadBtn").addEventListener("click", uploadProduct);
+  </script>
 
 </body>
 </html>
