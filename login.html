@@ -21,40 +21,33 @@
       background: #1a1a1a;
       padding: 30px;
       border-radius: 15px;
-      box-shadow: 0 0 25px rgba(76,255,136,0.2);
       text-align: center;
+      box-shadow: 0 0 25px rgba(76,255,136,0.3);
     }
 
-    h2 {
-      color: #4cff88;
-      margin-bottom: 25px;
-    }
+    h2 { color: #4cff88; margin-bottom: 20px; }
 
     input {
       width: 100%;
       padding: 12px;
-      margin: 12px 0;
+      margin: 10px 0;
       border-radius: 8px;
       border: none;
-      font-size: 16px;
-      background: #2a2a2a;
+      background: #222;
       color: white;
+      font-size: 16px;
     }
 
     button {
       width: 100%;
       padding: 12px;
-      background: #4cff88;
       border-radius: 8px;
-      color: #000;
-      font-weight: 600;
+      background: #4cff88;
+      border: none;
+      color: black;
+      font-weight: bold;
       cursor: pointer;
       font-size: 18px;
-      border: none;
-    }
-
-    button:hover {
-      background: #39e074;
     }
   </style>
 </head>
@@ -76,7 +69,7 @@
     const password = document.getElementById("password").value.trim();
 
     if (!username || !password) {
-      alert("Please enter username & password");
+      alert("Please enter username and password");
       return;
     }
 
@@ -86,17 +79,18 @@
         body: JSON.stringify({ username, password })
       });
 
-      const data = await res.json();
+      const text = await res.text();
+      const data = JSON.parse(text);
 
-      if (data.success) {
-        localStorage.setItem("adminLogin", "true");
+      if (data.success === true) {
+        sessionStorage.setItem("adminLogin", "true");
         window.location.href = "admin.html";
       } else {
-        alert("Wrong username or password");
+        alert("Incorrect username or password");
       }
 
     } catch (error) {
-      alert("Server error, try again.");
+      alert("Server error");
     }
   }
 </script>
