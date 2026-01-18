@@ -29,6 +29,10 @@
       font-weight: 500;
     }
 
+    nav a:hover {
+      color: #6aff9e;
+    }
+
     .logo {
       font-size: 28px;
       font-weight: 700;
@@ -50,7 +54,6 @@
       overflow: hidden;
     }
 
-    /* Animated Gradient BIG TEXT */
     .title {
       font-size: 65px;
       font-weight: 800;
@@ -68,7 +71,6 @@
       100% { background-position: 0% 50%; }
     }
 
-    /* Subtitle */
     .subtitle {
       font-size: 20px;
       margin-top: 15px;
@@ -82,7 +84,6 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Glow circles background */
     .circle {
       position: absolute;
       width: 450px;
@@ -101,7 +102,6 @@
       100% { transform: translate(40px,-20px); }
     }
 
-    /* CTA button */
     .btn {
       margin-top: 40px;
       padding: 14px 34px;
@@ -119,27 +119,35 @@
       transform: scale(1.08);
       box-shadow: 0 0 22px rgba(76,255,136,0.9);
     }
-
   </style>
 </head>
 <body>
 
   <nav>
     <div class="logo">Brothers Shoes</div>
+
     <div>
       <a href="index.html">Home</a>
       <a href="products.html">Products</a>
-      <a href="admin.html">Admin</a>
+
+      <!-- LOGIN / ADMIN dynamic button -->
+      <a id="loginBtn" href="login.html">Login</a>
     </div>
   </nav>
 
+  <script>
+    // 🌟 If admin logged in → show "Admin"
+    if (localStorage.getItem("adminLogin") === "true") {
+      document.getElementById("loginBtn").innerText = "Admin";
+      document.getElementById("loginBtn").href = "admin.html";
+    }
+  </script>
+
   <div class="hero">
 
-    <!-- Glowing background -->
     <div class="circle c1"></div>
     <div class="circle c2"></div>
 
-    <!-- Animated Gradient Title -->
     <div class="title">Brothers Shoes</div>
 
     <div class="subtitle">Premium Footwear for Everyday Style</div>
