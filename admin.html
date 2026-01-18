@@ -110,10 +110,30 @@
       text-align: center;
       color: #aaa;
     }
+
+    /* LOGOUT BUTTON */
+    .logout-btn {
+      background: #ff4c4c;
+      color: white;
+      border-radius: 30px;
+      margin-top: 15px;
+    }
+
+    .logout-btn:hover {
+      background: #ff2e2e;
+    }
   </style>
 </head>
 
 <body>
+
+  <!-- LOGIN PROTECTION -->
+  <script>
+    if (localStorage.getItem("adminLogin") !== "true") {
+      alert("Access Denied! Please Login First.");
+      window.location.href = "login.html";
+    }
+  </script>
 
   <!-- NAVBAR -->
   <nav class="navbar">
@@ -144,10 +164,18 @@
 
     <button id="uploadBtn">Upload Product</button>
 
+    <button class="logout-btn" onclick="logout()">Logout</button>
+
     <div class="note">Image uploads to Cloudinary • Data saved to Google Sheets</div>
   </div>
 
   <script>
+    // LOGOUT FUNCTION
+    function logout() {
+      localStorage.removeItem("adminLogin");
+      window.location.href = "login.html";
+    }
+
     const cloudName = "dwgtjjoj2";
     const uploadPreset = "footwear_upload";
 
