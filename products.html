@@ -2,168 +2,120 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Brothers Shoes — Products</title>
+  <title>Product Details</title>
 
   <style>
     body {
+      background: #0f0f0f;
+      color: white;
+      font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background: #0f0f0f;
-      font-family: Arial, sans-serif;
-      color: #fff;
     }
 
-    /* NAVBAR */
-    .navbar {
-      padding: 15px 40px;
-      background: #0b0b0b;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #222;
-    }
-
-    .logo {
-      color: #00e676;
-      font-size: 26px;
-      font-weight: bold;
-    }
-
-    .nav-links {
-      list-style: none;
-      display: flex;
-      gap: 25px;
-    }
-
-    .nav-links a {
-      color: white;
-      text-decoration: none;
-      font-size: 16px;
-    }
-
-    .nav-links a:hover {
-      color: #00e676;
-    }
-
-    /* TITLE */
-    h1 {
-      text-align: center;
-      margin-top: 30px;
-      margin-bottom: 40px;
-      color: #00e676;
-      font-size: 35px;
-    }
-
-    /* PRODUCT GRID */
-    .products {
+    .container {
       width: 90%;
       margin: auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 30px;
+      padding-top: 40px;
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+      justify-content: center;
     }
 
-    /* PRODUCT CARD */
-    .card {
-      background: #1b1b1b;
-      border-radius: 14px;
-      padding: 18px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
-      transition: 0.3s ease;
+    .product-image img {
+      width: 450px;
+      border-radius: 15px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.5);
     }
 
-    .card:hover {
-      transform: scale(1.04);
-      box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+    .info {
+      max-width: 450px;
     }
 
-    .card img {
-      width: 100%;
-      height: 250px;
-      object-fit: cover;
-      border-radius: 10px;
-    }
-
-    .card h3 {
-      margin-top: 12px;
-      font-size: 20px;
-      font-weight: bold;
+    .info h2 {
+      font-size: 32px;
+      margin-bottom: 15px;
       color: #00e676;
     }
 
     .price {
-      font-size: 18px;
-      margin: 6px 0;
+      font-size: 26px;
+      margin-bottom: 20px;
       font-weight: bold;
     }
 
     .desc {
-      font-size: 14px;
+      font-size: 16px;
       color: #ccc;
+      line-height: 1.5;
+      margin-bottom: 20px;
     }
 
+    .buy-btn {
+      display: inline-block;
+      background: #00e676;
+      padding: 14px 25px;
+      border-radius: 30px;
+      font-size: 20px;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .buy-btn:hover {
+      background: #12ff82;
+      transform: scale(1.05);
+    }
+
+    .back {
+      margin-top: 20px;
+      display: inline-block;
+      color: #00e676;
+      text-decoration: none;
+    }
   </style>
 </head>
 <body>
 
-  <!-- NAVBAR -->
-  <nav class="navbar">
-    <div class="logo">Brothers Shoes</div>
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="products.html">Products</a></li>
-      <li><a href="admin.html">Admin</a></li>
-    </ul>
-  </nav>
+  <div class="container">
+    <div class="product-image">
+      <img id="productImage" src="" alt="">
+    </div>
 
-  <h1>Our Footwear Collection</h1>
+    <div class="info">
+      <h2 id="productName"></h2>
+      <div id="productPrice" class="price"></div>
+      <div id="productDescription" class="desc"></div>
 
-  <div class="products" id="products"></div>
+      <a id="buyNow" class="buy-btn">Buy Now</a>
+      <br><a href="products.html" class="back">← Back to products</a>
+    </div>
+  </div>
 
   <script>
-    const sheetAPI =
-      "https://script.google.com/macros/s/AKfycbxlvzwKMe4kLICwgKT00Vfe8H569MMNq-2wQ46GLWGd7WtAr3u3b8MAOFwTJpUzxWpT/exec";
+    const url = new URLSearchParams(window.location.search);
 
-    async function loadProducts() {
-      const res = await fetch(sheetAPI);
-      const data = await res.json();
+    const name = url.get("name");
+    const price = url.get("price");
+    const img = url.get("image");
+    const desc = url.get("description");
 
-      const container = document.getElementById("products");
-      container.innerHTML = "";
+    document.getElementById("productImage").src = img;
+    document.getElementById("productName").innerText = name;
+    document.getElementById("productPrice").innerText =
+      price && !isNaN(price)
+      ? "₹ " + Number(price).toLocaleString("en-IN")
+      : "Price not available";
 
-      data.reverse().forEach(item => {
-        const priceValue = item.price && !isNaN(item.price)
-          ? "₹ " + Number(item.price).toLocaleString("en-IN")
-          : "Price not available";
+    document.getElementById("productDescription").innerText = desc;
 
-        const card = document.createElement("div");
-        card.className = "card";
-
-        card.innerHTML = `
-  <img src="${item.image}" alt="${item.name}">
-  <h3>${item.name}</h3>
-  <div class="price">${priceValue}</div>
-  <div class="desc">${item.description}</div>
-`;
-
-card.addEventListener("click", () => {
-  const url =
-    "product-detail.html?name=" + encodeURIComponent(item.name) +
-    "&price=" + encodeURIComponent(item.price) +
-    "&image=" + encodeURIComponent(item.image) +
-    "&description=" + encodeURIComponent(item.description);
-
-  window.location.href = url;
-});
-
-
-        container.appendChild(card);
-      });
-    }
-
-    loadProducts();
+    // WhatsApp Buy Now
+    document.getElementById("buyNow").href =
+      "https://wa.me/91XXXXXXXXXX?text=" +
+      encodeURIComponent(`Hi, I want to buy ${name} for ₹${price}.`);
   </script>
 
 </body>
 </html>
-
