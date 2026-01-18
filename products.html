@@ -140,11 +140,22 @@
         card.className = "card";
 
         card.innerHTML = `
-          <img src="${item.image}" alt="${item.name}">
-          <h3>${item.name}</h3>
-          <div class="price">${priceValue}</div>
-          <div class="desc">${item.description}</div>
-        `;
+  <img src="${item.image}" alt="${item.name}">
+  <h3>${item.name}</h3>
+  <div class="price">${priceValue}</div>
+  <div class="desc">${item.description}</div>
+`;
+
+card.addEventListener("click", () => {
+  const url =
+    "product-detail.html?name=" + encodeURIComponent(item.name) +
+    "&price=" + encodeURIComponent(item.price) +
+    "&image=" + encodeURIComponent(item.image) +
+    "&description=" + encodeURIComponent(item.description);
+
+  window.location.href = url;
+});
+
 
         container.appendChild(card);
       });
@@ -155,3 +166,4 @@
 
 </body>
 </html>
+
