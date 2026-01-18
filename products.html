@@ -2,120 +2,124 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Product Details</title>
+  <title>Brothers Shoes - Products</title>
 
   <style>
     body {
-      background: #0f0f0f;
-      color: white;
-      font-family: Arial, sans-serif;
+      font-family: 'Poppins', sans-serif;
+      background: #0e0e0e;
+      color: #fff;
       margin: 0;
-      padding: 0;
+      padding: 20px;
     }
 
-    .container {
-      width: 90%;
-      margin: auto;
-      padding-top: 40px;
-      display: flex;
-      gap: 40px;
-      align-items: flex-start;
-      justify-content: center;
+    h1 {
+      text-align: center;
+      color: #4cff88;
+      font-size: 36px;
+      margin-bottom: 35px;
+      letter-spacing: 1px;
     }
 
-    .product-image img {
-      width: 450px;
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+      padding: 10px;
+    }
+
+    .card {
+      background: #1a1a1a;
       border-radius: 15px;
-      box-shadow: 0 0 25px rgba(0,0,0,0.5);
+      padding: 15px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+      cursor: pointer;
+      transition: 0.3s ease;
     }
 
-    .info {
-      max-width: 450px;
+    .card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 25px rgba(76, 255, 150, 0.3);
     }
 
-    .info h2 {
-      font-size: 32px;
-      margin-bottom: 15px;
-      color: #00e676;
+    .card img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .card h3 {
+      margin: 10px 0 5px;
+      color: #4cff88;
+      font-size: 20px;
+      text-transform: capitalize;
     }
 
     .price {
-      font-size: 26px;
-      margin-bottom: 20px;
       font-weight: bold;
+      margin-bottom: 5px;
+      font-size: 17px;
     }
 
     .desc {
-      font-size: 16px;
-      color: #ccc;
-      line-height: 1.5;
-      margin-bottom: 20px;
-    }
-
-    .buy-btn {
-      display: inline-block;
-      background: #00e676;
-      padding: 14px 25px;
-      border-radius: 30px;
-      font-size: 20px;
-      color: #000;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .buy-btn:hover {
-      background: #12ff82;
-      transform: scale(1.05);
-    }
-
-    .back {
-      margin-top: 20px;
-      display: inline-block;
-      color: #00e676;
-      text-decoration: none;
+      font-size: 14px;
+      color: #bbb;
     }
   </style>
+
 </head>
 <body>
 
-  <div class="container">
-    <div class="product-image">
-      <img id="productImage" src="" alt="">
-    </div>
+<h1>Our Footwear Collection</h1>
 
-    <div class="info">
-      <h2 id="productName"></h2>
-      <div id="productPrice" class="price"></div>
-      <div id="productDescription" class="desc"></div>
+<div class="products" id="products"></div>
 
-      <a id="buyNow" class="buy-btn">Buy Now</a>
-      <br><a href="products.html" class="back">← Back to products</a>
-    </div>
-  </div>
+<script>
 
-  <script>
-    const url = new URLSearchParams(window.location.search);
+// Google Sheet API Updated Link
+const sheetAPI = 
+  "https://script.google.com/macros/s/AKfycbxlvzwKMe4kLICwgKT00Vfe8H569MMNq-2wQ46GLWGd7WtAr3u3b8MAOFwTJpUzxWpT/exec";
 
-    const name = url.get("name");
-    const price = url.get("price");
-    const img = url.get("image");
-    const desc = url.get("description");
+async function loadProducts() {
+  const res = await fetch(sheetAPI);
+  const data = await res.json();
 
-    document.getElementById("productImage").src = img;
-    document.getElementById("productName").innerText = name;
-    document.getElementById("productPrice").innerText =
-      price && !isNaN(price)
-      ? "₹ " + Number(price).toLocaleString("en-IN")
+  const container = document.getElementById("products");
+  container.innerHTML = "";
+
+  data.reverse().forEach(item => {
+    
+    const priceValue = item.price && !isNaN(item.price)
+      ? "₹ " + Number(item.price).toLocaleString("en-IN")
       : "Price not available";
 
-    document.getElementById("productDescription").innerText = desc;
+    const card = document.createElement("div");
+    card.className = "card";
 
-    // WhatsApp Buy Now
-    document.getElementById("buyNow").href =
-      "https://wa.me/91XXXXXXXXXX?text=" +
-      encodeURIComponent(`Hi, I want to buy ${name} for ₹${price}.`);
-  </script>
+    card.innerHTML = `
+      <img src="${item.image}" alt="${item.name}">
+      <h3>${item.name}</h3>
+      <div class="price">${priceValue}</div>
+      <div class="desc">${item.description}</div>
+    `;
+
+    card.addEventListener("click", () => {
+      const url = 
+        "product-detail.html?name=" + encodeURIComponent(item.name) +
+        "&price=" + encodeURIComponent(item.price) +
+        "&image=" + encodeURIComponent(item.image) +
+        "&description=" + encodeURIComponent(item.description);
+
+      window.location.href = url;
+    });
+
+    container.appendChild(card);
+  });
+}
+
+loadProducts();
+</script>
 
 </body>
 </html>
