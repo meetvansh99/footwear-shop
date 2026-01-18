@@ -130,14 +130,14 @@
       <a href="index.html">Home</a>
       <a href="products.html">Products</a>
 
-      <!-- LOGIN / ADMIN dynamic button -->
+      <!-- Dynamic login/admin -->
       <a id="loginBtn" href="login.html">Login</a>
     </div>
   </nav>
 
   <script>
-    // 🌟 If admin logged in → show "Admin"
-    if (localStorage.getItem("adminLogin") === "true") {
+    // 🌟 Session-based login check
+    if (sessionStorage.getItem("adminLogin") === "true") {
       document.getElementById("loginBtn").innerText = "Admin";
       document.getElementById("loginBtn").href = "admin.html";
     }
