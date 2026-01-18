@@ -14,6 +14,7 @@
       justify-content: center;
       align-items: center;
       min-height: 100vh;
+      padding: 20px;
     }
 
     .container {
@@ -64,7 +65,7 @@
     }
 
     .btn:hover {
-      background: #3ae374;
+      background: #32d46c;
     }
 
     .back {
@@ -81,6 +82,7 @@
       }
     }
   </style>
+
 </head>
 <body>
 
@@ -92,12 +94,15 @@
     <div class="price" id="productPrice"></div>
     <div class="desc" id="productDesc"></div>
 
-    <a href="#" class="btn">Buy Now</a>
+    <!-- BUY BUTTON -->
+    <a id="buyBtn" href="#" class="btn" target="_blank">Buy Now</a>
+
     <a href="products.html" class="back">← Back to products</a>
   </div>
 </div>
 
 <script>
+  // GET PARAMS FROM URL
   const params = new URLSearchParams(window.location.search);
 
   const name = params.get("name");
@@ -113,6 +118,19 @@
     price && !isNaN(price)
       ? "₹ " + Number(price).toLocaleString("en-IN")
       : "Price not available";
+
+  // WHATSAPP BUY NOW
+  const shopNumber = "917046570870"; // <-- Yahan apna WhatsApp number daalo
+
+  const msg =
+    `Hi Brothers Shoes 👟%0A` +
+    `I want to buy:%0A` +
+    `${name}%0A` +
+    `Price: ₹ ${price ? price : "N/A"}`;
+
+  const whatsappURL = `https://wa.me/${shopNumber}?text=${msg}`;
+
+  document.getElementById("buyBtn").href = whatsappURL;
 </script>
 
 </body>
