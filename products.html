@@ -1,183 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Brothers Shoes — Collection</title>
-
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Brothers Shoes — Products</title>
 
   <style>
-    * {
+    body {
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-      font-family: "Poppins", sans-serif;
-    }
-
-    body {
-      background: linear-gradient(135deg, #0a0a0a, #141414);
+      background: #0f0f0f;
+      font-family: Arial, sans-serif;
       color: #fff;
-      padding: 20px;
     }
 
-    /* ---------- BRAND HEADER ---------- */
-    .brand {
-      text-align: center;
-      margin-bottom: 35px;
-      font-size: 38px;
-      font-weight: 600;
+    /* NAVBAR */
+    .navbar {
+      padding: 15px 40px;
+      background: #0b0b0b;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #222;
+    }
+
+    .logo {
       color: #00e676;
-      letter-spacing: 1.5px;
-      text-shadow: 0 0 20px rgba(0,255,140,0.4);
+      font-size: 26px;
+      font-weight: bold;
     }
 
-    /* ---------- PRODUCT GRID ---------- */
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+    }
+
+    .nav-links a:hover {
+      color: #00e676;
+    }
+
+    /* TITLE */
+    h1 {
+      text-align: center;
+      margin-top: 30px;
+      margin-bottom: 40px;
+      color: #00e676;
+      font-size: 35px;
+    }
+
+    /* PRODUCT GRID */
     .products {
+      width: 90%;
+      margin: auto;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 25px;
-      padding: 10px;
+      gap: 30px;
     }
 
-    /* ---------- PRODUCT CARD (GLASS EFFECT) ---------- */
+    /* PRODUCT CARD */
     .card {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255,255,255,0.12);
-      backdrop-filter: blur(6px);
-      border-radius: 16px;
+      background: #1b1b1b;
+      border-radius: 14px;
       padding: 18px;
-      transition: 0.35s ease;
-      box-shadow: 0 6px 25px rgba(0,0,0,0.4);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+      transition: 0.3s ease;
     }
 
     .card:hover {
-      transform: translateY(-8px) scale(1.02);
-      border-color: #00e676;
-      box-shadow: 0 12px 35px rgba(0,255,120,0.25);
+      transform: scale(1.04);
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
     }
 
     .card img {
       width: 100%;
       height: 250px;
       object-fit: cover;
-      border-radius: 12px;
-      margin-bottom: 12px;
+      border-radius: 10px;
     }
 
     .card h3 {
-      color: #00e676;
+      margin-top: 12px;
       font-size: 20px;
-      margin-bottom: 8px;
-      text-transform: capitalize;
+      font-weight: bold;
+      color: #00e676;
     }
 
     .price {
       font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 6px;
+      margin: 6px 0;
+      font-weight: bold;
     }
 
     .desc {
       font-size: 14px;
       color: #ccc;
-      line-height: 1.5;
     }
-  </style>
 
+  </style>
 </head>
 <body>
 
+  <!-- NAVBAR -->
   <nav class="navbar">
-  <div class="logo">Brothers Shoes</div>
+    <div class="logo">Brothers Shoes</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html">Products</a></li>
+      <li><a href="admin.html">Admin</a></li>
+    </ul>
+  </nav>
 
-  <ul class="nav-links">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="products.html">Products</a></li>
-    <li><a href="admin.html">Admin</a></li>
-  </ul>
-</nav>
+  <h1>Our Footwear Collection</h1>
 
-<style>
-  .navbar {
-    width: 100%;
-    padding: 15px 30px;
-    background: #0d0d0d;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    border-bottom: 1px solid #1f1f1f;
-  }
-
-  .logo {
-    font-size: 24px;
-    font-weight: bold;
-    color: #00e676;
-    letter-spacing: 1px;
-  }
-
-  .nav-links {
-    list-style: none;
-    display: flex;
-    gap: 25px;
-  }
-
-  .nav-links li a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 17px;
-    transition: 0.3s;
-  }
-
-  .nav-links li a:hover {
-    color: #00e676;
-  }
-</style>
-
-
-  <!-- BRAND TITLE -->
-  <div class="brand">BROTHERS SHOES 👟</div>
-
-  <!-- PRODUCT GRID -->
   <div class="products" id="products"></div>
 
   <script>
-  // GOOGLE SCRIPT API URL
-  const sheetAPI = 
-    "https://script.google.com/macros/s/AKfycbxlvzwKMe4kLICwgKT00Vfe8H569MMNq-2wQ46GLWGd7WtAr3u3b8MAOFwTJpUzxWpT/exec";
+    const sheetAPI =
+      "https://script.google.com/macros/s/AKfycbxlvzwKMe4kLICwgKT00Vfe8H569MMNq-2wQ46GLWGd7WtAr3u3b8MAOFwTJpUzxWpT/exec";
 
-  async function loadProducts() {
-    const res = await fetch(sheetAPI);
-    const data = await res.json();
+    async function loadProducts() {
+      const res = await fetch(sheetAPI);
+      const data = await res.json();
 
-    const container = document.getElementById("products");
-    container.innerHTML = "";
+      const container = document.getElementById("products");
+      container.innerHTML = "";
 
-    data.reverse().forEach(item => {
-      const priceValue = item.price && !isNaN(item.price)
-        ? "₹ " + Number(item.price).toLocaleString("en-IN")
-        : "Price not available";
+      data.reverse().forEach(item => {
+        const priceValue = item.price && !isNaN(item.price)
+          ? "₹ " + Number(item.price).toLocaleString("en-IN")
+          : "Price not available";
 
-      const card = document.createElement("div");
-      card.className = "card";
+        const card = document.createElement("div");
+        card.className = "card";
 
-      card.innerHTML = `
-        <img src="${item.image}" alt="${item.name}">
-        <h3>${item.name}</h3>
-        <div class="price">${priceValue}</div>
-        <div class="desc">${item.description}</div>
-      `;
+        card.innerHTML = `
+          <img src="${item.image}" alt="${item.name}">
+          <h3>${item.name}</h3>
+          <div class="price">${priceValue}</div>
+          <div class="desc">${item.description}</div>
+        `;
 
-      container.appendChild(card);
-    });
-  }
+        container.appendChild(card);
+      });
+    }
 
-  loadProducts();
+    loadProducts();
   </script>
 
 </body>
 </html>
-
