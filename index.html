@@ -1,131 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Brothers Shoes — Admin</title>
+  <meta charset="UTF-8">
+  <title>Brothers Shoes</title>
 
-<script>
-  if (sessionStorage.getItem("adminLogin") !== "true") {
-    window.location.href = "login.html";
-  }
-</script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #0b0b0b;
+      color: white;
+      overflow-x: hidden;
+    }
 
-<style>
-  body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #0f0f0f;
-    color: white;
-  }
+    /* NAVBAR */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 40px;
+      font-size: 18px;
+    }
 
-  .navbar {
-    padding: 15px 40px;
-    background: #0b0b0b;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+    nav a {
+      color: #4cff88;
+      text-decoration: none;
+      margin-left: 30px;
+      font-weight: 500;
+    }
 
-  .logo { color: #00e676; font-size: 24px; font-weight: bold; }
+    nav a:hover {
+      color: #6aff9e;
+    }
 
-  .nav-links a {
-    color: white;
-    text-decoration: none;
-    margin-left: 25px;
-  }
+    .logo {
+      font-size: 28px;
+      font-weight: 700;
+      background: linear-gradient(90deg, #4cff88, #52ffa8, #58ffcb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
-  .admin-box {
-    width: 450px;
-    background: #1b1b1b;
-    margin: 40px auto;
-    padding: 30px;
-    border-radius: 15px;
-  }
+    /* HERO SECTION */
+    .hero {
+      height: 88vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 30px;
+      position: relative;
+      overflow: hidden;
+    }
 
-  input, textarea, button {
-    width: 100%;
-    padding: 12px;
-    margin-top: 10px;
-    border-radius: 10px;
-  }
+    .title {
+      font-size: 65px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      background: linear-gradient(120deg, #4cff88, #60ffc3, #2cff93);
+      background-size: 200% 200%;
+      animation: gradientFlow 5s ease infinite;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
-  button {
-    background: #00e676;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-  }
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
 
-  .logout { background: #ff4c4c; color: white; }
-</style>
+    .subtitle {
+      font-size: 20px;
+      margin-top: 15px;
+      color: #cfcfcf;
+      opacity: 0.8;
+      animation: fade 1s ease forwards;
+    }
+
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .circle {
+      position: absolute;
+      width: 450px;
+      height: 450px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(76,255,136,0.25), transparent 70%);
+      filter: blur(55px);
+      animation: move 10s infinite alternate ease-in-out;
+    }
+
+    .c1 { top: 10%; left: 12%; }
+    .c2 { bottom: 5%; right: 15%; }
+
+    @keyframes move {
+      0% { transform: translate(0,0); }
+      100% { transform: translate(40px,-20px); }
+    }
+
+    .btn {
+      margin-top: 40px;
+      padding: 14px 34px;
+      background: #4cff88;
+      color: #000;
+      font-size: 20px;
+      border-radius: 35px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.3s;
+      box-shadow: 0 0 15px rgba(76,255,136,0.5);
+    }
+
+    .btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(76,255,136,0.9);
+    }
+  </style>
 </head>
 
 <body>
 
-<nav class="navbar">
-  <div class="logo">Brothers Shoes</div>
-  <div class="nav-links">
-    <a href="index.html">Home</a>
-    <a href="products.html">Products</a>
-    <a href="#" onclick="logout()">Logout</a>
-  </div>
-</nav>
+  <nav>
+    <div class="logo">Brothers Shoes</div>
 
-<div class="admin-box">
-  <h2>Admin Panel</h2>
+    <div>
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
 
-  <input id="name" placeholder="Product Name">
-  <input id="price" type="number" placeholder="Price">
-  <textarea id="description" placeholder="Description"></textarea>
-  <input type="file" id="imageInput">
+      <!-- Dynamic Login / Admin -->
+      <a id="loginBtn" href="login.html">Login</a>
+    </div>
+  </nav>
 
-  <button onclick="uploadProduct()">Upload Product</button>
-  <button class="logout" onclick="logout()">Logout</button>
-</div>
-
-<script>
-function logout() {
-  sessionStorage.removeItem("adminLogin");
-  window.location.href = "login.html";
-}
-
-const cloudName = "dwgtjjoj2";
-const uploadPreset = "footwear_upload";
-
-async function uploadImage(file) {
-  const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
-  const fd = new FormData();
-  fd.append("file", file);
-  fd.append("upload_preset", uploadPreset);
-
-  const res = await fetch(url, { method: "POST", body: fd });
-  const data = await res.json();
-  return data.secure_url;
-}
-
-async function uploadProduct() {
-  const name = document.getElementById("name").value;
-  const price = document.getElementById("price").value;
-  const desc = document.getElementById("description").value;
-  const file = document.getElementById("imageInput").files[0];
-
-  if (!file) return alert("Please select an image");
-
-  const imageUrl = await uploadImage(file);
-
-  await fetch(
-    "https://script.google.com/macros/s/AKfycbxlvzwKMe4kLICwgKT00Vfe8H569MMNq-2wQ46GLWGd7WtAr3u3b8MAOFwTJpUzxWpT/exec",
-    {
-      method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, price, image: imageUrl, description: desc })
+  <script>
+    // 👉 Session-Based Login System
+    if (sessionStorage.getItem("adminLogin") === "true") {
+      const btn = document.getElementById("loginBtn");
+      btn.textContent = "Admin";
+      btn.href = "admin.html";
     }
-  );
+  </script>
 
-  alert("Product added!");
-}
-</script>
+  <div class="hero">
+
+    <div class="circle c1"></div>
+    <div class="circle c2"></div>
+
+    <div class="title">Brothers Shoes</div>
+
+    <div class="subtitle">Premium Footwear for Everyday Style</div>
+
+    <a href="products.html" class="btn">Explore Collection</a>
+  </div>
 
 </body>
 </html>
